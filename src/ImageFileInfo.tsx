@@ -1,6 +1,6 @@
 import { v4 as guidGenerator } from "uuid";
 
-class ImageFileInfo {
+export class ImageFileInfo {
   private fileName: string; // Name of imported image file
 
   private fileID: string; // ID of image file
@@ -25,5 +25,3 @@ class ImageFileInfo {
     this.height = 0;
   }
 }
-
-export default ImageFileInfo;

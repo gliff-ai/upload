@@ -2,7 +2,7 @@ import React, { Component, ReactNode } from "react";
 import Button from "@material-ui/core/Button";
 import BackupIcon from "@material-ui/icons/Backup";
 import * as UTIF from "utif";
-import ImageFileInfo from "./ImageFileInfo";
+import { ImageFileInfo } from "./ImageFileInfo";
 
 interface Props {
   setUploadedImage: (
@@ -11,7 +11,7 @@ interface Props {
   ) => void;
 }
 
-export default class UploadImage extends Component<Props> {
+export class UploadImage extends Component<Props> {
   private imageFileInfo: ImageFileInfo | null;
 
   private slicesData: Array<Array<ImageBitmap>> = [];
