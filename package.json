@@ -1,7 +1,7 @@
 {
   "name": "@gliff-ai/upload",
   "version": "1.0.0",
-  "description": "",
+  "description": "gliff.ai UPLOAD - a React component for uploading multidimensional images",
   "main": "dist/main.js",
   "files": [
     "dist/*"
