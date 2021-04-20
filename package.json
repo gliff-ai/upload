@@ -2,7 +2,10 @@
   "name": "@gliff-ai/upload",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/main.js",
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "build": "webpack --progress --config webpack.config.js",
     "lint": "npm run lint:ts",
