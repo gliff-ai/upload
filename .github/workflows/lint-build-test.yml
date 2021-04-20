@@ -1,0 +1,48 @@
+name: Lint, Build, Test
+on: push
+
+jobs:
+  Lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15
+      - name: Setup dependencies
+        run: npm i -g eslint prettier && npm i
+      - name: Lint
+        run: npm run lint
+      - name: Prettier
+        run: npx prettier -c **/*.tsx
+  Build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15
+      - name: Setup dependencies
+        run: npm i
+      - name: Build
+        run: npm run build
+  Test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15
+      - name: Setup dependencies
+        run: npm i
+      - name: Test
+        run: npm run test
