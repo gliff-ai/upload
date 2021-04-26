@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "es2020",
+    "sourceMap": true,
+    "target": "es6",
+    "jsx": "react",
+    "allowJs": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": [
+    "typings/**/*",
+    "src/**/*.tsx",
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "typings/**/*.ts",
+    "./jest-setup.ts"
+  ],
+  "exclude": ["src/**/*_.tsx"]
+}
