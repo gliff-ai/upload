@@ -7,7 +7,7 @@ interface Props {
     imageFileInfo: ImageFileInfo,
     slicesData?: Array<Array<ImageBitmap>>
   ) => void;
-  spanElement: ReactNode;  // span html element that defines the look of the upload button
+  spanElement: ReactNode; // span html element that defines the look of the upload button
 }
 
 export class UploadImage extends Component<Props> {
