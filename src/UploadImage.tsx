@@ -1,6 +1,4 @@
 import React, { Component, ReactNode } from "react";
-import Button from "@material-ui/core/Button";
-import BackupIcon from "@material-ui/icons/Backup";
 import * as UTIF from "utif";
 import { ImageFileInfo } from "./ImageFileInfo";
 
@@ -9,6 +7,7 @@ interface Props {
     imageFileInfo: ImageFileInfo,
     slicesData?: Array<Array<ImageBitmap>>
   ) => void;
+  spanElement: ReactNode;  // span html element that defines the look of the upload button
 }
 
 export class UploadImage extends Component<Props> {
@@ -203,9 +202,7 @@ export class UploadImage extends Component<Props> {
             this.uploadImage(e.target.files[0]);
           }}
         />
-        <Button aria-label="upload-picture" component="span">
-          <BackupIcon />
-        </Button>
+        {this.props.spanElement}
       </label>
     </div>
   );
