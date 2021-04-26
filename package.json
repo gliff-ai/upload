@@ -60,8 +60,6 @@
     "webpack-dev-server": "^3.11.2"
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
     "@types/utif": "^3.0.1",
     "@types/uuid": "^8.3.0",
     "react": "^17.0.0",
