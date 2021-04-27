@@ -3,6 +3,8 @@
   "version": "1.0.1",
   "description": "gliff.ai UPLOAD - a React component for uploading multidimensional images",
   "main": "dist/main.js",
+  "module": "src/index.tsx",
+  "typings": "typings/*.d.ts",
   "files": [
     "dist/*"
   ],
@@ -34,6 +36,8 @@
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.1",
     "@types/resize-observer-browser": "^0.1.5",
+    "@types/utif": "^3.0.1",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.18.0",
     "babel-loader": "^8.2.2",
@@ -59,12 +63,12 @@
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2"
   },
-  "peerDependencies": {
-    "@types/utif": "^3.0.1",
-    "@types/uuid": "^8.3.0",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.1",
+  "dependencies": {
     "utif": "^3.1.0",
     "uuid": "^8.3.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0",
+    "react-dom": "^17.0.1"
   }
 }
