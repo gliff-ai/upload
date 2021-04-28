@@ -6,7 +6,8 @@
   "module": "src/index.tsx",
   "typings": "typings/*.d.ts",
   "files": [
-    "dist/*"
+    "dist/*",
+    "typings/*"
   ],
   "scripts": {
     "build": "webpack --progress --config webpack.config.js",
