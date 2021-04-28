@@ -10,10 +10,11 @@ Technical documentation will be available soon.
 
 ## Examples of use
 
-Import the `UploadImage` module:
+Import the `UploadImage` module and the `ImageFileInfo` type:
 
 ```javascript
 import { UploadImage } from @gliff-ai/upload;
+import { ImageFileInfo } from @gliff-ai/upload/typings;
 ```
 
 Use the `UploadImage` module:
