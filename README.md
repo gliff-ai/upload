@@ -8,6 +8,39 @@ Technical documentation will be available soon.
 
 `npm install @gliff-ai/upload` will install the package from npm registry.
 
+## Examples of use
+
+Import the `UploadImage` module:
+
+```javascript
+import { UploadImage } from @gliff-ai/upload;
+```
+
+Use the `UploadImage` module:
+
+```javascript
+setUploadedImage = (
+  imageFileInfo: ImageFileInfo,
+  slicesData: Array<Array<ImageBitmap>>
+): void => {
+  this.imageFileInfo = imageFileInfo;
+  this.slicesData = slicesData;
+};
+
+render = (): ReactNode => (
+  <UploadImage
+    setUploadedImage={this.setUploadedImage}
+    spanElement={
+      <Button aria-label="upload-picture" component="span">
+        <Backup />
+      </Button>
+    } // A <span> element that marks the clickable area.
+  />
+);
+```
+
+The example above uses [Material-UI](https://material-ui.com/).
+
 ## Development
 
 Frontend code should be written in [Typescript](https://www.typescriptlang.org/) and transpiled using the options in `tsconfig.json`.
@@ -15,6 +48,10 @@ Frontend code is distributed using the npm registry.
 NPM should be used for package management.
 
 Please follow [gliff.ai](https://gliff.ai)'s Community Guidelines when contributing to this codebase.
+
+Run `npm i` and `npm run build` from the root directory to get started.
+
+You can import this package by running `npm link` in the package directory, then `npm link @gliff-ai/upload` in the directory where you want to use the package (this will create a symbolic link).
 
 ## Linting and formatting
 
