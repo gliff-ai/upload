@@ -4,7 +4,11 @@ updates:
     directory: "/.github/"
     schedule:
       interval: "weekly"
+    reviewers:
+      - "gliff-ai/techteam"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+    reviewers:
+      - "gliff-ai/techteam"
