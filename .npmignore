@@ -1,5 +1,0 @@
-# .npmignore
-src
-.gitignore
-webpack.config.js
-.vscode
