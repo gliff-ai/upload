@@ -143,9 +143,8 @@ export class UploadImage extends Component<Props> {
         slicesDataPromises.push(new Array<Promise<ImageBitmap>>());
       }
 
-      slicesDataPromises[Math.floor(i / channels)][channel] = createImageBitmap(
-        canvas
-      );
+      slicesDataPromises[Math.floor(i / channels)][channel] =
+        createImageBitmap(canvas);
     });
 
     // the linter complains if we await the createImageBitmaps inside a for loop, so instead we have to let the for loop
@@ -153,10 +152,8 @@ export class UploadImage extends Component<Props> {
     // (this should make it faster, not slower)
     // see https://eslint.org/docs/rules/no-await-in-loop
     // also https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
-    const halfUnwrapped: Promise<
-      ImageBitmap[]
-    >[] = slicesDataPromises.map(async (sliceChannels) =>
-      Promise.all(sliceChannels)
+    const halfUnwrapped: Promise<ImageBitmap[]>[] = slicesDataPromises.map(
+      async (sliceChannels) => Promise.all(sliceChannels)
     );
     Promise.all(halfUnwrapped)
       .then((slicesData) => {
