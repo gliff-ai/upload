@@ -8,6 +8,7 @@ interface Props {
     slicesData?: Array<Array<ImageBitmap>>
   ) => void;
   spanElement: ReactNode; // span html element that defines the look of the upload button
+  multiple: boolean;
 }
 
 export class UploadImage extends Component<Props> {
@@ -22,16 +23,9 @@ export class UploadImage extends Component<Props> {
 
   private uploadImage = (imageFile: File): void => {
     const patternTiff = /tiff|tif$/i;
-    this.imageFileInfo = new ImageFileInfo(imageFile.name);
 
     if (patternTiff.exec(imageFile.name)) {
-      this.readFile(imageFile)
-        .then((buffer: ArrayBuffer) => {
-          this.loadTiffImage(buffer);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      this.loadTiffImage(imageFile);
     } else {
       this.loadNonTiffImage(imageFile);
     }
@@ -50,20 +44,23 @@ export class UploadImage extends Component<Props> {
 
   private loadNonTiffImage = (imageFile: File): void => {
     const reader = new FileReader();
-    this.slicesData = new Array<Array<ImageBitmap>>();
 
     reader.onload = () => {
       const image = new Image();
       image.src = reader.result.toString();
 
       image.onload = () => {
-        this.imageFileInfo.width = image.width;
-        this.imageFileInfo.height = image.height;
-
         createImageBitmap(image)
           .then((imageBitmap) => {
-            this.slicesData.push(new Array(imageBitmap));
-            this.props.setUploadedImage(this.imageFileInfo, this.slicesData);
+            const slicesData = [[imageBitmap]];
+            this.props.setUploadedImage(
+              new ImageFileInfo({
+                fileName: imageFile.name,
+                width: image.width,
+                height: image.height,
+              }),
+              slicesData
+            );
           })
           .catch((e) => console.log(e));
       };
@@ -71,96 +68,115 @@ export class UploadImage extends Component<Props> {
     reader.readAsDataURL(imageFile);
   };
 
-  private loadTiffImage = (buffer: ArrayBuffer): void => {
-    // Decode the images using the UTIF library.
-    const ifds = UTIF.decode(buffer);
-    ifds.forEach((ifd) => UTIF.decodeImage(buffer, ifd));
+  private loadTiffImage = (imageFile: File): void => {
+    this.readFile(imageFile)
+      .then((buffer: ArrayBuffer) => {
+        // Decode the images using the UTIF library.
+        const ifds = UTIF.decode(buffer);
+        ifds.forEach((ifd) => UTIF.decodeImage(buffer, ifd));
 
-    const { width, height } = ifds[0];
+        const { width, height } = ifds[0];
 
-    const resolutionUnitstr = ifds[0].t296 as string[];
+        const resolutionUnitstr = ifds[0].t296 as string[];
 
-    // set this.imageFileInfo.resolution_x and resolution_y:
-    if (resolutionUnitstr !== undefined && resolutionUnitstr.length === 1) {
-      const resolutionUnit = parseInt(resolutionUnitstr[0], 10);
+        // set this.imageFileInfo.resolutionX and resolutionY:
+        let resolutionX: number;
+        let resolutionY: number;
+        let resolutionZ: number;
+        if (resolutionUnitstr !== undefined && resolutionUnitstr.length === 1) {
+          const resolutionUnit = parseInt(resolutionUnitstr[0], 10);
 
-      const resolutionXstr = ifds[0].t282 as string[];
-      const resolutionYstr = ifds[0].t283 as string[];
+          const resolutionXstr = ifds[0].t282 as string[];
+          const resolutionYstr = ifds[0].t283 as string[];
 
-      if (resolutionXstr !== undefined && resolutionXstr.length === 1) {
-        this.imageFileInfo.resolution_x = parseFloat(resolutionXstr[0]);
-      }
-      if (resolutionYstr !== undefined && resolutionYstr.length === 1) {
-        this.imageFileInfo.resolution_y = parseFloat(resolutionYstr[0]);
-      }
+          if (resolutionXstr !== undefined && resolutionXstr.length === 1) {
+            resolutionX = parseFloat(resolutionXstr[0]);
+          }
+          if (resolutionYstr !== undefined && resolutionYstr.length === 1) {
+            resolutionY = parseFloat(resolutionYstr[0]);
+          }
 
-      // There is no reliable way of detecting the Z resolution.
-      // If the resolution unit is 1, assume that everything has been scaled
-      // according to the Z resolution (i.e resolutionZ = 1)
-      // else assume that the Z resolution is the same as the X resolution.
-      if (resolutionUnit !== 1) {
-        this.imageFileInfo.resolution_y = this.imageFileInfo.resolution_x;
-      }
-    }
+          // There is no reliable way of detecting the Z resolution.
+          // If the resolution unit is 1, assume that everything has been scaled
+          // according to the Z resolution (i.e resolutionZ = 1)
+          // else assume that the Z resolution is the same as the X resolution.
+          if (resolutionUnit !== 1) {
+            resolutionZ = resolutionX;
+          }
+        }
 
-    const descriptions = ifds[0].t270 as string[];
-    const channels = this.getNumberOfChannels(descriptions);
+        const descriptions = ifds[0].t270 as string[];
+        const channels = this.getNumberOfChannels(descriptions);
 
-    const slicesDataPromises: Promise<ImageBitmap>[][] = [];
+        const slicesDataPromises: Promise<ImageBitmap>[][] = [];
 
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-    canvas.width = width;
-    canvas.height = height;
-    this.imageFileInfo.width = width;
-    this.imageFileInfo.height = height;
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.width = width;
+        canvas.height = height;
 
-    ifds.forEach((ifd, i) => {
-      // extract image data from the idf page:
-      const sliceChannelRGBA8 = new Uint8ClampedArray(UTIF.toRGBA8(ifds[i]));
-      const imageData = new ImageData(sliceChannelRGBA8, width, height);
+        ifds.forEach((ifd, i) => {
+          // extract image data from the idf page:
+          const sliceChannelRGBA8 = new Uint8ClampedArray(
+            UTIF.toRGBA8(ifds[i])
+          );
+          const imageData = new ImageData(sliceChannelRGBA8, width, height);
 
-      // colour the image according to which channel it's from and how many channels there are
-      context.putImageData(imageData, 0, 0);
+          // colour the image according to which channel it's from and how many channels there are
+          context.putImageData(imageData, 0, 0);
 
-      let colour;
-      const channel = channels - 1 - (i % channels); // channels are in reverse order in ifds
-      if (channels > 1) {
-        if (channel === 0) colour = "#FF0000FF";
-        else if (channel === 1 && channels !== 2) colour = "#00FF00FF";
-        else if (channel === 2) colour = "#0000FFFF";
-        else if (channel === 3) colour = "#FFFF00FF";
-        else if (channel === 4) colour = "#FF00FFFF";
-        else if (channel === 5 || (channel === 1 && channels === 2))
-          colour = "#00FFFFFF";
+          let colour;
+          const channel = channels - 1 - (i % channels); // channels are in reverse order in ifds
+          if (channels > 1) {
+            if (channel === 0) colour = "#FF0000FF";
+            else if (channel === 1 && channels !== 2) colour = "#00FF00FF";
+            else if (channel === 2) colour = "#0000FFFF";
+            else if (channel === 3) colour = "#FFFF00FF";
+            else if (channel === 4) colour = "#FF00FFFF";
+            else if (channel === 5 || (channel === 1 && channels === 2))
+              colour = "#00FFFFFF";
 
-        context.fillStyle = colour;
-        context.globalCompositeOperation = "multiply";
-        context.fillRect(0, 0, canvas.width, canvas.height);
-      }
+            context.fillStyle = colour;
+            context.globalCompositeOperation = "multiply";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+          }
 
-      if (i % channels === 0) {
-        slicesDataPromises.push(new Array<Promise<ImageBitmap>>());
-      }
+          if (i % channels === 0) {
+            slicesDataPromises.push(new Array<Promise<ImageBitmap>>());
+          }
 
-      slicesDataPromises[Math.floor(i / channels)][channel] = createImageBitmap(
-        canvas
-      );
-    });
+          slicesDataPromises[Math.floor(i / channels)][
+            channel
+          ] = createImageBitmap(canvas);
+        });
 
-    // the linter complains if we await the createImageBitmaps inside a for loop, so instead we have to let the for loop
-    // build a Promise<ImageBitmap>[][], and then use Promise.all twice to turn that into ImageBitmap[][]
-    // (this should make it faster, not slower)
-    // see https://eslint.org/docs/rules/no-await-in-loop
-    // also https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
-    const halfUnwrapped: Promise<
-      ImageBitmap[]
-    >[] = slicesDataPromises.map(async (sliceChannels) =>
-      Promise.all(sliceChannels)
-    );
-    Promise.all(halfUnwrapped)
-      .then((slicesData) => {
-        this.props.setUploadedImage(this.imageFileInfo, slicesData);
+        // the linter complains if we await the createImageBitmaps inside a for loop, so instead we have to let the for loop
+        // build a Promise<ImageBitmap>[][], and then use Promise.all twice to turn that into ImageBitmap[][]
+        // (this should make it faster, not slower)
+        // see https://eslint.org/docs/rules/no-await-in-loop
+        // also https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+        const halfUnwrapped: Promise<
+          ImageBitmap[]
+        >[] = slicesDataPromises.map(async (sliceChannels) =>
+          Promise.all(sliceChannels)
+        );
+        Promise.all(halfUnwrapped)
+          .then((slicesData) => {
+            this.props.setUploadedImage(
+              new ImageFileInfo({
+                fileName: imageFile.name,
+                resolution_x: resolutionX,
+                resolution_y: resolutionY,
+                resolution_z: resolutionZ,
+                width,
+                height,
+              }),
+              slicesData
+            );
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       })
       .catch((e) => {
         console.log(e);
@@ -199,8 +215,11 @@ export class UploadImage extends Component<Props> {
           type="file"
           style={{ display: "none", textAlign: "center" }}
           onChange={(e) => {
-            this.uploadImage(e.target.files[0]);
+            for (let i = 0; i < e.target.files.length; i += 1) {
+              this.uploadImage(e.target.files[i]);
+            }
           }}
+          multiple={this.props.multiple}
         />
         {this.props.spanElement}
       </label>
