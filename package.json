@@ -13,6 +13,7 @@
     "build": "webpack --progress --config webpack.config.js",
     "lint": "npm run lint:ts",
     "lint:ts": "npx eslint \"**/*.ts*\"",
+    "format": "npx prettier -w src/{**,.}/*.ts*",
     "serve": "webpack serve --config webpack.config.js",
     "test": "jest --coverage  --passWithNoTests",
     "prepare": "rm -r dist/; webpack --progress --config webpack.build.js"
