@@ -8,6 +8,7 @@ interface FileInfo {
   resolution_z?: number;
   width: number;
   height: number;
+  num_slices: number;
 }
 
 export class ImageFileInfo {
@@ -25,6 +26,8 @@ export class ImageFileInfo {
 
   readonly height: number;
 
+  readonly num_slices: number;
+
   constructor(fileInfo: FileInfo) {
     this.fileName = fileInfo.fileName;
     this.fileID = fileInfo.fileID || guidGenerator();
@@ -33,5 +36,6 @@ export class ImageFileInfo {
     this.resolution_z = fileInfo.resolution_z;
     this.width = fileInfo.width;
     this.height = fileInfo.height;
+    this.num_slices = fileInfo.num_slices;
   }
 }

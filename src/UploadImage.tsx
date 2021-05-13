@@ -170,6 +170,7 @@ export class UploadImage extends Component<Props> {
                 resolution_z: resolutionZ,
                 width,
                 height,
+                num_slices: slicesData.length
               }),
               slicesData
             );
