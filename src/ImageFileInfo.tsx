@@ -9,6 +9,7 @@ interface FileInfo {
   width: number;
   height: number;
   num_slices: number;
+  num_channels: number;
 }
 
 export class ImageFileInfo {
@@ -28,6 +29,8 @@ export class ImageFileInfo {
 
   readonly num_slices: number;
 
+  readonly num_channels: number;
+
   constructor(fileInfo: FileInfo) {
     this.fileName = fileInfo.fileName;
     this.fileID = fileInfo.fileID || guidGenerator();
@@ -37,5 +40,6 @@ export class ImageFileInfo {
     this.width = fileInfo.width;
     this.height = fileInfo.height;
     this.num_slices = fileInfo.num_slices;
+    this.num_channels = fileInfo.num_channels;
   }
 }

@@ -58,6 +58,8 @@ export class UploadImage extends Component<Props> {
                 fileName: imageFile.name,
                 width: image.width,
                 height: image.height,
+                num_slices: 1,
+                num_channels: 3
               }),
               slicesData
             );
@@ -170,7 +172,8 @@ export class UploadImage extends Component<Props> {
                 resolution_z: resolutionZ,
                 width,
                 height,
-                num_slices: slicesData.length
+                num_slices: slicesData.length,
+                num_channels: slicesData[0].length,
               }),
               slicesData
             );
