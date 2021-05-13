@@ -22,7 +22,7 @@ export class ImageFileInfo {
   readonly resolution_z: number;
 
   readonly width: number;
-  
+
   readonly height: number;
 
   constructor(fileInfo: FileInfo) {
