@@ -145,6 +145,7 @@ export class UploadImage extends Component<Props> {
             slicesDataPromises.push(new Array<Promise<ImageBitmap>>());
           }
 
+          // prettier-ignore
           slicesDataPromises[Math.floor(i / channels)][channel] = createImageBitmap(
             canvas
           );
@@ -155,6 +156,7 @@ export class UploadImage extends Component<Props> {
         // (this should make it faster, not slower)
         // see https://eslint.org/docs/rules/no-await-in-loop
         // also https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+        // prettier-ignore
         const halfUnwrapped: Promise<ImageBitmap[]>[] = slicesDataPromises.map(
           async (sliceChannels) => Promise.all(sliceChannels)
         );
