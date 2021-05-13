@@ -102,7 +102,10 @@ export class UploadImage extends Component<Props> {
           // If the resolution unit is 1, assume that everything has been scaled
           // according to the Z resolution (i.e resolutionZ = 1)
           // else assume that the Z resolution is the same as the X resolution.
-          if (resolutionUnit !== 1) {
+          if (resolutionUnit === 1) {
+            resolutionZ = 1;
+          }
+          else {
             resolutionZ = resolutionX;
           }
         }
