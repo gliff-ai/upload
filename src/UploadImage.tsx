@@ -59,7 +59,7 @@ export class UploadImage extends Component<Props> {
                 width: image.width,
                 height: image.height,
                 num_slices: 1,
-                num_channels: 3
+                num_channels: 3,
               }),
               slicesData
             );
@@ -104,8 +104,7 @@ export class UploadImage extends Component<Props> {
           // else assume that the Z resolution is the same as the X resolution.
           if (resolutionUnit === 1) {
             resolutionZ = 1;
-          }
-          else {
+          } else {
             resolutionZ = resolutionX;
           }
         }
