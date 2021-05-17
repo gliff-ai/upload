@@ -56,6 +56,7 @@ export class UploadImage extends Component<Props> {
             this.props.setUploadedImage(
               new ImageFileInfo({
                 fileName: imageFile.name,
+                size: imageFile.size,
                 width: image.width,
                 height: image.height,
                 num_slices: 1,
@@ -172,6 +173,7 @@ export class UploadImage extends Component<Props> {
                 resolution_x: resolutionX,
                 resolution_y: resolutionY,
                 resolution_z: resolutionZ,
+                size: imageFile.size,
                 width,
                 height,
                 num_slices: slicesData.length,
