@@ -36,6 +36,7 @@ render = (): ReactNode => (
         <Backup />
       </Button>
     } // A <span> element that marks the clickable area.
+    multiple // allow uploading multiple files at once; use multiple={false} to disallow
   />
 );
 ```

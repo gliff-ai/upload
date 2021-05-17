@@ -8,6 +8,7 @@ interface FileInfo {
   resolution_z?: number;
   width: number;
   height: number;
+  size: number; // in bytes
   num_slices: number;
   num_channels: number;
 }
@@ -27,6 +28,8 @@ export class ImageFileInfo {
 
   readonly height: number;
 
+  readonly size: number; // in bytes
+
   readonly num_slices: number;
 
   readonly num_channels: number;
@@ -37,6 +40,7 @@ export class ImageFileInfo {
     this.resolution_x = fileInfo.resolution_x;
     this.resolution_y = fileInfo.resolution_y;
     this.resolution_z = fileInfo.resolution_z;
+    this.size = fileInfo.size;
     this.width = fileInfo.width;
     this.height = fileInfo.height;
     this.num_slices = fileInfo.num_slices;
