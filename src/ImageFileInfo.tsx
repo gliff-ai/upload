@@ -11,6 +11,7 @@ interface FileInfo {
   size: number; // in bytes
   num_slices: number;
   num_channels: number;
+  content_hash?: string; // i.e. md5
 }
 
 export class ImageFileInfo {
@@ -34,6 +35,8 @@ export class ImageFileInfo {
 
   readonly num_channels: number;
 
+  readonly content_hash: string; // i.e. md5
+
   constructor(fileInfo: FileInfo) {
     this.fileName = fileInfo.fileName;
     this.fileID = fileInfo.fileID || guidGenerator();
@@ -45,5 +48,6 @@ export class ImageFileInfo {
     this.height = fileInfo.height;
     this.num_slices = fileInfo.num_slices;
     this.num_channels = fileInfo.num_channels;
+    this.content_hash = fileInfo.content_hash;
   }
 }

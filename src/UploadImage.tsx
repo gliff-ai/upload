@@ -1,4 +1,5 @@
 import React, { Component, ReactNode } from "react";
+import { Md5 } from "ts-md5";
 import * as UTIF from "utif";
 import { ImageFileInfo } from "./ImageFileInfo";
 
@@ -48,6 +49,7 @@ export class UploadImage extends Component<Props> {
     reader.onload = () => {
       const image = new Image();
       image.src = reader.result.toString();
+      const md5 = Md5.hashStr(reader.result.toString());
 
       image.onload = () => {
         createImageBitmap(image)
@@ -61,6 +63,7 @@ export class UploadImage extends Component<Props> {
                 height: image.height,
                 num_slices: 1,
                 num_channels: 3,
+                content_hash: md5,
               }),
               slicesData
             );
