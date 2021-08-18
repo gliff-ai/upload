@@ -34,7 +34,7 @@
     "@babel/preset-env": "^7.12.17",
     "@babel/preset-react": "^7.12.13",
     "@babel/preset-typescript": "^7.12.17",
-    "@types/jest": "^26.0.21",
+    "@types/jest": "^27.0.1",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.1",
     "@types/resize-observer-browser": "^0.1.5",
