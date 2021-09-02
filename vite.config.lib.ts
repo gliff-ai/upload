@@ -8,7 +8,7 @@ export default defineConfig({
     minify: false, // TODO maybe?
     lib: {
       entry: path.resolve(__dirname, "src/index.tsx"),
-      name: "@gliff-ai/style",
+      name: "@gliff-ai/upload",
       formats: ["es"],
       fileName: "index",
     },
@@ -17,10 +17,6 @@ export default defineConfig({
       // into your library
       external: [
         "react",
-        "react-router-dom",
-        "@material-ui/core",
-        "@material-ui/icons",
-        "@material-ui/lab"
       ],
       output: {
         // Provide global variables to use in the UMD build

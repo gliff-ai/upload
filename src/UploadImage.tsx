@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from "react";
+import { Component, ReactNode } from "react";
 import { Md5 } from "ts-md5";
 import * as UTIF from "utif";
 import { ImageFileInfo } from "./ImageFileInfo";
