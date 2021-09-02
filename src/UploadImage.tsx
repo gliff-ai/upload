@@ -3,6 +3,8 @@ import { Md5 } from "ts-md5";
 import * as UTIF from "utif";
 import { ImageFileInfo } from "./ImageFileInfo";
 
+const log = console;
+
 interface Props {
   setUploadedImage: (
     imageFileInfo: ImageFileInfo,
@@ -40,7 +42,7 @@ export class UploadImage extends Component<Props> {
       };
       fr.readAsArrayBuffer(file);
     }).catch((error) => {
-      console.log(error);
+      log.error(error);
     });
 
   private loadNonTiffImage = (imageFile: File): void => {
@@ -68,7 +70,7 @@ export class UploadImage extends Component<Props> {
               slicesData
             );
           })
-          .catch((e) => console.log(e));
+          .catch((e) => log.error(e));
       };
     };
     reader.readAsDataURL(imageFile);
@@ -186,11 +188,11 @@ export class UploadImage extends Component<Props> {
             );
           })
           .catch((e) => {
-            console.log(e);
+            log.error(e);
           });
       })
       .catch((e) => {
-        console.log(e);
+        log.error(e);
       });
   };
 
