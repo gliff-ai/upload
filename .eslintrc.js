@@ -8,6 +8,7 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   extends: [
     "eslint:recommended",
+    "airbnb",
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -17,6 +18,9 @@ module.exports = {
     {
       files: ["*.ts", "*.tsx"],
       rules: {
+        "global-require": 0,
+        "import/extensions": 0,
+        "@typescript-eslint/no-var-requires": 0,
         "react/destructuring-assignment": "off", // This would be nice, but we call a lot of methods on props we pass down which rules it out
         "import/prefer-default-export": "off", // Most of the internet agrees this should be off
         "no-restricted-syntax": [

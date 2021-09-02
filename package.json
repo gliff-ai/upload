@@ -1,22 +1,21 @@
 {
   "name": "@gliff-ai/upload",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "gliff.ai UPLOAD - a React component for uploading multidimensional images",
-  "main": "dist/main.js",
-  "module": "src/index.tsx",
-  "typings": "typings/index.d.ts",
+  "main": "dist/index.es.js",
+  "module": "dist/index.es.js",
+  "typings": "dist/index.d.ts",
   "files": [
-    "dist/*",
-    "typings/*"
+    "dist"
   ],
   "scripts": {
-    "build": "webpack --progress --config webpack.config.js",
-    "lint": "npm run lint:ts",
-    "lint:ts": "npx eslint \"**/*.ts*\"",
-    "format": "npx prettier -w src/{**,.}/*.ts*",
-    "serve": "webpack serve --config webpack.config.js",
-    "test": "jest --coverage  --passWithNoTests",
-    "prepare": "rm -r dist/; webpack --progress --config webpack.build.js"
+    "build": "npx vite build -c vite.config.lib.ts && tsc --emitDeclarationOnly --outDir dist",
+    "watch": "npx vite build -c vite.config.lib.ts --watch",
+    "format": "npx --no-install prettier --write src/*.ts*",
+    "prettier": "npx --no-install prettier -c src/*.ts*",
+    "lint": "npm run lint:ts && npm run prettier",
+    "lint:ts": "npx --no-install eslint src/*.ts*",
+    "test": "jest --coverage --passWithNoTests"
   },
   "repository": {
     "type": "git",
@@ -29,41 +28,27 @@
   },
   "homepage": "https://github.com/gliff-ai/upload#readme",
   "devDependencies": {
-    "@babel/core": "^7.13.8",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/preset-env": "^7.12.17",
-    "@babel/preset-react": "^7.12.13",
-    "@babel/preset-typescript": "^7.12.17",
     "@types/jest": "^27.0.1",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.1",
-    "@types/resize-observer-browser": "^0.1.5",
     "@types/utif": "^3.0.1",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
-    "babel-loader": "^8.2.2",
-    "css-loader": "^6.2.0",
     "eslint": "^7.25.0",
-    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^14.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-mui-unused-classes": "^1.0.3",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.23.1",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-webpack-plugin": "^3.0.1",
     "jest": "^27.0.1",
     "prettier": "=2.3.0",
-    "raw-loader": "^4.0.2",
-    "sass": "^1.32.8",
-    "sass-loader": "^12.1.0",
-    "style-loader": "^3.0.0",
-    "ts-loader": "^9.2.1",
-    "typescript": "^4.2.3",
-    "webpack": "^5.27.2",
-    "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^3.11.2"
+    "react": "^17.0.0",
+    "typescript": "^4.2.5"
   },
   "dependencies": {
     "ts-md5": "^1.2.9",
@@ -71,7 +56,6 @@
     "uuid": "^8.3.2"
   },
   "peerDependencies": {
-    "react": "^17.0.0",
-    "react-dom": "^17.0.1"
+    "react": "^17.0.0"
   }
 }
