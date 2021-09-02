@@ -1,0 +1,16 @@
+pull_request_rules:
+  - name: Automatic squash merge on approval
+    conditions:
+      - "#approved-reviews-by>=2"
+      - base=main
+      - check-success=Build
+      - check-success=Lint
+      - check-success=Test
+    actions:
+      merge:
+        method: squash
+  - name: delete head branch after merge
+    conditions:
+      - merged
+    actions:
+      delete_head_branch:
