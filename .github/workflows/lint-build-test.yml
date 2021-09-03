@@ -16,8 +16,6 @@ jobs:
         run: npm i -g eslint prettier && npm i
       - name: Lint
         run: npm run lint
-      - name: Prettier
-        run: npx prettier -c **/*.tsx
   Build:
     runs-on: ubuntu-latest
     timeout-minutes: 2
@@ -60,6 +58,8 @@ jobs:
         node-version: 16
     - name: Setup dependencies
       run: npm i --omit=peer
+    - name: Build
+      run: npm run build
     - name: Publish
       uses: mikeal/merge-release@master
       env:
