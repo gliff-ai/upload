@@ -5,10 +5,15 @@ import { ImageFileInfo } from "./ImageFileInfo";
 
 const log = console;
 
+interface CallbackArgs {
+  slicesData: ImageBitmap[][];
+  imageFileInfo: ImageFileInfo;
+}
+
 interface Props {
   setUploadedImage: (
-    imageFileInfo: ImageFileInfo,
-    slicesData?: Array<Array<ImageBitmap>>
+    imageFileInfo: ImageFileInfo[],
+    slicesData?: ImageBitmap[][][]
   ) => void;
   spanElement: ReactNode; // span html element that defines the look of the upload button
   multiple: boolean;
@@ -24,64 +29,56 @@ export class UploadImage extends Component<Props> {
     this.imageFileInfo = null;
   }
 
-  private uploadImage = (imageFile: File): void => {
+  private uploadImage = (imageFile: File): Promise<CallbackArgs> => {
     const patternTiff = /tiff|tif$/i;
 
     if (patternTiff.exec(imageFile.name)) {
-      this.loadTiffImage(imageFile);
+      return this.loadTiffImage(imageFile);
     } else {
-      this.loadNonTiffImage(imageFile);
+      return this.loadNonTiffImage(imageFile);
     }
   };
 
-  private readFile = (file: File) =>
-    new Promise((resolve: (buffer: ArrayBuffer) => void) => {
-      const fr = new FileReader();
-      fr.onload = () => {
-        resolve(fr.result as ArrayBuffer);
+  private loadNonTiffImage = (imageFile: File): Promise<CallbackArgs> =>
+    new Promise((resolve: (callbackArgs: CallbackArgs) => void) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const image = new Image();
+        image.src = reader.result.toString();
+        const md5 = Md5.hashStr(reader.result.toString());
+
+        image.onload = () => {
+          createImageBitmap(image)
+            .then((imageBitmap) => {
+              resolve({
+                slicesData: [[imageBitmap]],
+                imageFileInfo: new ImageFileInfo({
+                  fileName: imageFile.name,
+                  size: imageFile.size,
+                  width: image.width,
+                  height: image.height,
+                  num_slices: 1,
+                  num_channels: 3,
+                  content_hash: md5,
+                }),
+              });
+            })
+            .catch((e) => log.error(e));
+        };
       };
-      fr.readAsArrayBuffer(file);
-    }).catch((error) => {
-      log.error(error);
+      reader.readAsDataURL(imageFile);
     });
 
-  private loadNonTiffImage = (imageFile: File): void => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const image = new Image();
-      image.src = reader.result.toString();
-      const md5 = Md5.hashStr(reader.result.toString());
-
-      image.onload = () => {
-        createImageBitmap(image)
-          .then((imageBitmap) => {
-            const slicesData = [[imageBitmap]];
-            this.props.setUploadedImage(
-              new ImageFileInfo({
-                fileName: imageFile.name,
-                size: imageFile.size,
-                width: image.width,
-                height: image.height,
-                num_slices: 1,
-                num_channels: 3,
-                content_hash: md5,
-              }),
-              slicesData
-            );
-          })
-          .catch((e) => log.error(e));
-      };
-    };
-    reader.readAsDataURL(imageFile);
-  };
-
-  private loadTiffImage = (imageFile: File): void => {
-    this.readFile(imageFile)
-      .then((buffer: ArrayBuffer) => {
+  private loadTiffImage = (imageFile: File): Promise<CallbackArgs> =>
+    new Promise((resolve: (callbackArgs: CallbackArgs) => void) => {
+      const reader = new FileReader();
+      reader.onload = () => {
         // Decode the images using the UTIF library.
-        const ifds = UTIF.decode(buffer);
-        ifds.forEach((ifd) => UTIF.decodeImage(buffer, ifd));
+        const ifds = UTIF.decode(reader.result as ArrayBuffer);
+        ifds.forEach((ifd) =>
+          UTIF.decodeImage(reader.result as ArrayBuffer, ifd)
+        );
 
         const { width, height } = ifds[0];
 
@@ -172,8 +169,9 @@ export class UploadImage extends Component<Props> {
         );
         Promise.all(halfUnwrapped)
           .then((slicesData) => {
-            this.props.setUploadedImage(
-              new ImageFileInfo({
+            resolve({
+              slicesData,
+              imageFileInfo: new ImageFileInfo({
                 fileName: imageFile.name,
                 resolution_x: resolutionX,
                 resolution_y: resolutionY,
@@ -184,17 +182,15 @@ export class UploadImage extends Component<Props> {
                 num_slices: slicesData.length,
                 num_channels: slicesData[0].length,
               }),
-              slicesData
-            );
+            });
           })
           .catch((e) => {
             log.error(e);
           });
-      })
-      .catch((e) => {
-        log.error(e);
-      });
-  };
+      };
+
+      reader.readAsArrayBuffer(imageFile);
+    });
 
   private getNumberOfChannels = (descriptions: string[]): number => {
     // Get the number of extra channels in the uploaded tiff image
@@ -228,9 +224,17 @@ export class UploadImage extends Component<Props> {
           type="file"
           style={{ display: "none", textAlign: "center" }}
           onChange={(e) => {
+            const argsPromises: Promise<CallbackArgs>[] = [];
             for (let i = 0; i < e.target.files.length; i += 1) {
-              this.uploadImage(e.target.files[i]);
+              argsPromises.push(this.uploadImage(e.target.files[i]));
             }
+            Promise.all(argsPromises).then(
+              (callbackArgsArray: CallbackArgs[]) =>
+                this.props.setUploadedImage(
+                  callbackArgsArray.map((args) => args.imageFileInfo),
+                  callbackArgsArray.map((args) => args.slicesData)
+                )
+            );
           }}
           multiple={this.props.multiple}
         />
