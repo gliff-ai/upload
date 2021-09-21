@@ -34,9 +34,8 @@ export class UploadImage extends Component<Props> {
 
     if (patternTiff.exec(imageFile.name)) {
       return this.loadTiffImage(imageFile);
-    } else {
-      return this.loadNonTiffImage(imageFile);
     }
+    return this.loadNonTiffImage(imageFile);
   };
 
   private loadNonTiffImage = (imageFile: File): Promise<CallbackArgs> =>
@@ -228,13 +227,14 @@ export class UploadImage extends Component<Props> {
             for (let i = 0; i < e.target.files.length; i += 1) {
               argsPromises.push(this.uploadImage(e.target.files[i]));
             }
-            Promise.all(argsPromises).then(
-              (callbackArgsArray: CallbackArgs[]) =>
+            Promise.all(argsPromises)
+              .then((callbackArgsArray: CallbackArgs[]) =>
                 this.props.setUploadedImage(
                   callbackArgsArray.map((args) => args.imageFileInfo),
                   callbackArgsArray.map((args) => args.slicesData)
                 )
-            );
+              )
+              .catch((err) => log.error(err));
           }}
           multiple={this.props.multiple}
         />
