@@ -227,12 +227,17 @@ export class UploadImage extends Component<Props> {
             for (let i = 0; i < e.target.files.length; i += 1) {
               argsPromises.push(this.uploadImage(e.target.files[i]));
             }
-            Promise.all(argsPromises)
-              .then((callbackArgsArray: CallbackArgs[]) =>
-                this.props.setUploadedImage(
-                  callbackArgsArray.map((args) => args.imageFileInfo),
-                  callbackArgsArray.map((args) => args.slicesData)
-                )
+            Promise.allSettled(argsPromises)
+              .then(
+                (callbackArgsArray: PromiseSettledResult<CallbackArgs>[]) => {
+                  const successfulUploads = callbackArgsArray.filter(
+                    (result) => result.status === "fulfilled"
+                  ) as PromiseFulfilledResult<CallbackArgs>[];
+                  this.props.setUploadedImage(
+                    successfulUploads.map((args) => args.value.imageFileInfo),
+                    successfulUploads.map((args) => args.value.slicesData)
+                  );
+                }
               )
               .catch((err) => log.error(err));
           }}
