@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "npx vite build -c vite.config.lib.ts && tsc --emitDeclarationOnly --outDir dist",
+    "build": "npx vite build -c vite.config.lib.ts && tsc --emitDeclarationOnly --outDir dist && tsc-alias -p tsconfig.json",
     "watch": "npx vite build -c vite.config.lib.ts --watch",
     "format": "npx --no-install prettier --write src/*.ts*",
     "prettier": "npx --no-install prettier -c src/*.ts*",
@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "ts-md5": "^1.2.9",
+    "tsc-alias": "^1.3.9",
     "utif": "^3.1.0",
     "uuid": "^8.3.2"
   },
