@@ -13,7 +13,7 @@ repository:
   topics: contributions-welcome, image-upload, machine-learning, MLOps, artificial-intelligence, dataops, gliff-ai
 
   # Updates the default branch for this repository.
-  default_branch: master
+  default_branch: main
 
 # Labels: define labels for Issues and Pull Requests
 labels:
