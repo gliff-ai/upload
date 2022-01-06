@@ -1,21 +1,21 @@
-# These settings are synced to GitHub by https://probot.github.io/apps/settings/
+# These settings are synced to GitHub by https://probot.github.io/apps/settings/.
 
 repository:
   # See https://docs.github.com/en/rest/reference/repos#update-a-repository for all available settings.
 
-  # The name of the repository. Changing this will rename the repository
+  # The name of the repository. Changing this will rename the repository.
   name: upload
 
-  # A short description of the repository that will show up on GitHub
+  # A short description of the repository that will show up on GitHub.
   description: gliff.ai UPLOAD – a component for allowing the upload of a variety of image files, including multidimensional TIFFs, for the purposes for machine learning development.
   
-  # A comma-separated list of topics to set on the repository
+  # A comma-separated list of topics to set on the repository.
   topics: contributions-welcome, image-upload, machine-learning, MLOps, artificial-intelligence, dataops, gliff-ai
 
   # Updates the default branch for this repository.
   default_branch: main
 
-# Labels: define labels for Issues and Pull Requests
+# Labels: define labels for Issues and Pull Requests.
 labels:
   - name: good-first-issue
     color: '#FFFFFF'
