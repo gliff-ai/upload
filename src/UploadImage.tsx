@@ -48,10 +48,25 @@ export class UploadImage extends Component<Props> {
         const md5 = Md5.hashStr(reader.result.toString());
 
         image.onload = () => {
-          createImageBitmap(image)
-            .then((imageBitmap) => {
+          // extract red green and blue channels as separate imageBitmaps:
+          const canvases: HTMLCanvasElement[] = [];
+          for (const colour of ["#FF0000FF", "#00FF00FF", "#0000FFFF"]) {
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            canvas.width = image.width;
+            canvas.height = image.height;
+            context.globalCompositeOperation = "source-over";
+            context.drawImage(image, 0, 0);
+            context.globalCompositeOperation = "multiply";
+            context.fillStyle = colour;
+            context.fillRect(0, 0, image.width, image.height);
+            canvases.push(canvas);
+          }
+
+          Promise.all(canvases.map((c) => createImageBitmap(c)))
+            .then((RGBImageBitmaps) => {
               resolve({
-                slicesData: [[imageBitmap]],
+                slicesData: [RGBImageBitmaps],
                 imageFileInfo: new ImageFileInfo({
                   fileName: imageFile.name,
                   size: imageFile.size,
