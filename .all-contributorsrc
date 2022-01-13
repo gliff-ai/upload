@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "joshuajames-smith",
+      "name": "Josh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/83074763?v=4",
+      "profile": "https://linktr.ee/joshuajames_smith",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "upload",
+  "projectOwner": "gliff-ai",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

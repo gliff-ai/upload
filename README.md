@@ -1,6 +1,6 @@
 # gliff.ai UPLOAD
 
-![Latest Tag](https://img.shields.io/github/v/tag/gliff-ai/upload?&label=latest_tag&style=flat-square&color=f2f2f2) ![Number of Open Issues](https://img.shields.io/github/issues/gliff-ai/upload?style=flat-square&color=yellow) ![Number of Open Pull Requests](https://img.shields.io/github/issues-pr/gliff-ai/upload?style=flat-square&color=yellow) ![Number of Contributors](https://img.shields.io/github/contributors/gliff-ai/upload?style=flat-square&color=yellow) ![Repository Size](https://img.shields.io/github/repo-size/gliff-ai/upload?style=flat-square&color=red) ![Repo License](https://img.shields.io/github/license/gliff-ai/upload?color=0078FF&style=flat-square)
+![Latest Tag](https://img.shields.io/github/v/tag/gliff-ai/upload?&label=latest_tag&style=flat-square&color=f2f2f2) ![Number of Open Issues](https://img.shields.io/github/issues/gliff-ai/upload?style=flat-square&color=yellow) ![Number of Open Pull Requests](https://img.shields.io/github/issues-pr/gliff-ai/upload?style=flat-square&color=yellow) [![Number of Contributors](https://img.shields.io/badge/all_contributors-1-yellow.svg?style=flat-square)](#contributors-) ![Repository Size](https://img.shields.io/github/repo-size/gliff-ai/upload?style=flat-square&color=red) ![Repo License](https://img.shields.io/github/license/gliff-ai/upload?color=0078FF&style=flat-square)
 
 👋 **Welcome in!** 👋
 
@@ -111,8 +111,22 @@ We welcome all contributors and any contributions on this project through the li
 Sounds good and want to contribute to the project? 🧑‍💻 \
 Please check the [gliff.ai Contribution Guide]((https://github.com/gliff-ai/.github/blob/main/CONTRIBUTING.md)) 👋 before you get started. Don’t forget the [gliff.ai Code of Conduct]((https://github.com/gliff-ai/.github/blob/main/CODE_OF_CONDUCT.md)) ⚠️ and  [gliff.ai Security Policy]((https://github.com/gliff-ai/.github/blob/main/SECURITY.md)) 🔒 too!
 
-A big thank you from the entire gliff.ai team to these fellow contributors ([emoji key](https://allcontributors.org/docs/en/emoji-key)): \
-[{{Contributor List - _coming soon_}}](https://github.com/all-contributors/all-contributors)
+A big thank you from the entire gliff.ai team to these fellow contributors ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://linktr.ee/joshuajames_smith"><img src="https://avatars.githubusercontent.com/u/83074763?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Josh</b></sub></a><br /><a href="https://github.com/gliff-ai/upload/commits?author=joshuajames-smith" title="Documentation">📖</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+_This project follows the [all-contributors specification](https://github.com/all-contributors/all-contributors) and uses the [all-contributors emoji key](https://allcontributors.org/docs/en/emoji-key) to credit type of contributions!_
 
 ## Contact
 
