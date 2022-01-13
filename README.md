@@ -126,7 +126,7 @@ A big thank you from the entire gliff.ai team to these fellow contributors ([emo
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-_This project follows the [all-contributors specification](https://github.com/all-contributors/all-contributors) and uses the [all-contributors emoji key](https://allcontributors.org/docs/en/emoji-key) to credit contribution types!_
+_This project follows the [all-contributors specification](https://github.com/all-contributors/all-contributors) and makes use of the [all-contributors emoji key](https://allcontributors.org/docs/en/emoji-key) to credit contribution types from our contributors!_
 
 ## Contact
 
