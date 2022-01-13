@@ -1,9 +1,6 @@
 # gliff.ai UPLOAD
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-![Latest Tag](https://img.shields.io/github/v/tag/gliff-ai/upload?&label=latest_tag&style=flat-square&color=f2f2f2) ![Number of Open Issues](https://img.shields.io/github/issues/gliff-ai/upload?style=flat-square&color=yellow) ![Number of Open Pull Requests](https://img.shields.io/github/issues-pr/gliff-ai/upload?style=flat-square&color=yellow) ![Number of Contributors](https://img.shields.io/github/contributors/gliff-ai/upload?style=flat-square&color=yellow) ![Repository Size](https://img.shields.io/github/repo-size/gliff-ai/upload?style=flat-square&color=red) ![Repo License](https://img.shields.io/github/license/gliff-ai/upload?color=0078FF&style=flat-square)
+![Latest Tag](https://img.shields.io/github/v/tag/gliff-ai/upload?&label=latest_tag&style=flat-square&color=f2f2f2) ![Number of Open Issues](https://img.shields.io/github/issues/gliff-ai/upload?style=flat-square&color=yellow) ![Number of Open Pull Requests](https://img.shields.io/github/issues-pr/gliff-ai/upload?style=flat-square&color=yellow) [![Number of Contributors](https://img.shields.io/badge/all_contributors-1-yellow.svg?style=flat-square)](#contributors-) ![Repository Size](https://img.shields.io/github/repo-size/gliff-ai/upload?style=flat-square&color=red) ![Repo License](https://img.shields.io/github/license/gliff-ai/upload?color=0078FF&style=flat-square)
 
 👋 **Welcome in!** 👋
 
@@ -114,27 +111,7 @@ We welcome all contributors and any contributions on this project through the li
 Sounds good and want to contribute to the project? 🧑‍💻 \
 Please check the [gliff.ai Contribution Guide]((https://github.com/gliff-ai/.github/blob/main/CONTRIBUTING.md)) 👋 before you get started. Don’t forget the [gliff.ai Code of Conduct]((https://github.com/gliff-ai/.github/blob/main/CODE_OF_CONDUCT.md)) ⚠️ and  [gliff.ai Security Policy]((https://github.com/gliff-ai/.github/blob/main/SECURITY.md)) 🔒 too!
 
-A big thank you from the entire gliff.ai team to these fellow contributors ([emoji key](https://allcontributors.org/docs/en/emoji-key)): \
-[{{Contributor List - _coming soon_}}](https://github.com/all-contributors/all-contributors)
-
-## Contact
-
-[{{back to navigation}}](#table-of-contents)
-
-Need some help? 🤔 Have a question? 🧠 \
-Reach out to the gliff.ai team at [community@gliff.ai](mailto:community@gliff.ai?subject=[GitHub]) or on GitHub.
-
-## License
-
-[{{back to navigation}}](#table-of-contents)
-
-This code is licensed under a [GNU AGPLv3 license](https://github.com/gliff-ai/upload/blob/main/LICENSE) 📝 \
-Curious about our reasoning for this? Read about them [here](https://gliff.ai/articles/open-source-license-gnu-agplv3/)!
-
-## Contributors ✨
-
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
+A big thank you from the entire gliff.ai team to these fellow contributors ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
@@ -149,4 +126,18 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+_This project follows the [all-contributors specification](https://github.com/all-contributors/all-contributors) and uses the [all-contributors emoji key](https://allcontributors.org/docs/en/emoji-key) to credit type of contributions!_
+
+## Contact
+
+[{{back to navigation}}](#table-of-contents)
+
+Need some help? 🤔 Have a question? 🧠 \
+Reach out to the gliff.ai team at [community@gliff.ai](mailto:community@gliff.ai?subject=[GitHub]) or on GitHub.
+
+## License
+
+[{{back to navigation}}](#table-of-contents)
+
+This code is licensed under a [GNU AGPLv3 license](https://github.com/gliff-ai/upload/blob/main/LICENSE) 📝 \
+Curious about our reasoning for this? Read about them [here](https://gliff.ai/articles/open-source-license-gnu-agplv3/)!
