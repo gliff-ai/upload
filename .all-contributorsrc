@@ -13,6 +13,20 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "ChasNelson1990",
+      "name": "Chas Nelson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7795189?v=4",
+      "profile": "http://www.chasnelson.co.uk",
+      "contributions": [
+        "code",
+        "ideas",
+        "projectManagement",
+        "review",
+        "maintenance",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,

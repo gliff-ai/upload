@@ -118,6 +118,7 @@ A big thank you from the entire gliff.ai team to these fellow contributors ([emo
 <table>
   <tr>
     <td align="center"><a href="https://linktr.ee/joshuajames_smith"><img src="https://avatars.githubusercontent.com/u/83074763?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Josh</b></sub></a><br /><a href="https://github.com/gliff-ai/upload/commits?author=joshuajames-smith" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://www.chasnelson.co.uk"><img src="https://avatars.githubusercontent.com/u/7795189?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Chas Nelson</b></sub></a><br /><a href="https://github.com/gliff-ai/upload/commits?author=ChasNelson1990" title="Code">💻</a> <a href="#ideas-ChasNelson1990" title="Ideas, Planning, & Feedback">🤔</a> <a href="#projectManagement-ChasNelson1990" title="Project Management">📆</a> <a href="https://github.com/gliff-ai/upload/pulls?q=is%3Apr+reviewed-by%3AChasNelson1990" title="Reviewed Pull Requests">👀</a> <a href="#maintenance-ChasNelson1990" title="Maintenance">🚧</a> <a href="https://github.com/gliff-ai/upload/commits?author=ChasNelson1990" title="Tests">⚠️</a></td>
   </tr>
 </table>
 
