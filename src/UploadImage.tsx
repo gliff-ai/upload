@@ -3,6 +3,13 @@ import { Md5 } from "ts-md5";
 import * as UTIF from "utif";
 import { ImageFileInfo } from "./ImageFileInfo";
 
+import dicomParser from "dicom-parser";
+import cornerstone from "cornerstone-core";
+import cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
+import cornerstoneMath from "cornerstone-math";
+import cornerstoneTools from "cornerstone-tools";
+import Hammer from "hammerjs";
+
 const log = console;
 
 interface CallbackArgs {
@@ -31,11 +38,120 @@ export class UploadImage extends Component<Props> {
 
   private uploadImage = (imageFile: File): Promise<CallbackArgs> => {
     const patternTiff = /tiff|tif$/i;
+    const patternDICOM = /dcm$/i;
 
     if (patternTiff.exec(imageFile.name)) {
       return this.loadTiffImage(imageFile);
+    } else if (patternDICOM.exec(imageFile.name)) {
+      return this.loadDICOMImage(imageFile);
+    } else {
+      return this.loadNonTiffImage(imageFile);
     }
-    return this.loadNonTiffImage(imageFile);
+  };
+
+  private loadDICOMImage = (imageFile: File): Promise<CallbackArgs> => {
+    // Cornerstone Tools
+    cornerstoneTools.external.cornerstone = cornerstone;
+    cornerstoneTools.external.Hammer = Hammer;
+    cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
+    cornerstoneTools.init();
+
+    // Image Loader
+    cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
+    cornerstoneWADOImageLoader.external.dicomParser = dicomParser;
+    cornerstoneWADOImageLoader.webWorkerManager.initialize({
+      maxWebWorkers: navigator.hardwareConcurrency || 1,
+      startWebWorkersOnDemand: true,
+      taskConfiguration: {
+        decodeTask: {
+          initializeCodecsOnStartup: false,
+          usePDFJS: false,
+          strict: false,
+        },
+      },
+      webWorkerTaskPaths: [
+        "https://unpkg.com/cornerstone-wado-image-loader@4.1.0/dist/610.bundle.min.worker.js",
+      ],
+    });
+
+    const imageId =
+      cornerstoneWADOImageLoader.wadouri.fileManager.add(imageFile);
+    return cornerstone.loadImage(imageId).then((image) => {
+      console.log(image);
+      console.log(image.data);
+      console.log(image.getPixelData());
+      console.log(
+        `Height: ${image.height}, Width: ${image.width}, Slices: ${
+          image.data.byteArray.length / (image.height * image.width)
+        }`
+      );
+
+      const data = [];
+      let pixelData: number[];
+      if (image.data.byteArray.length > image.getPixelData()) {
+        pixelData = image.data.byteArray;
+      } else {
+        pixelData = image.getPixelData();
+      }
+
+      if (image.color) {
+        // insert alpha into pixelData:
+        for (let i = 0; i < pixelData.length; i += 1) {
+          data.push(pixelData[i]);
+          if (i % 3 === 2) data.push(255); // alpha channel
+        }
+      } else {
+        for (let i = 0; i < pixelData.length; i += 1) {
+          data.push(pixelData[i]); // R
+          data.push(pixelData[i]); // G
+          data.push(pixelData[i]); // B
+          data.push(255); // A
+        }
+      }
+
+      // trim pixel data to a whole number of slices:
+      const slices = Math.floor(
+        pixelData.length / (image.height * image.width)
+      );
+      const imageDataSize = 4 * image.height * image.width * slices;
+      data.splice(0, (data.length - imageDataSize) / 2); // remove front padding
+      data.splice(imageDataSize); // remove rear padding
+      
+      const sliceBytes = image.width * image.height * 4;
+      const sliceImageData: ImageData[] = [];
+      for (let i = 0; i < slices; i += 1) {
+        sliceImageData.push(
+          new ImageData(
+            new Uint8ClampedArray(
+              data.slice(sliceBytes * i, sliceBytes * (i + 1))
+            ),
+            image.width,
+            image.height
+          )
+        );
+      }
+
+      const imageBitmaps = sliceImageData.map((imageData) =>
+        createImageBitmap(imageData)
+      );
+      return Promise.all(imageBitmaps).then((imageBitmaps) => {
+        // wrap each imageBitmap in an array:
+        const slicesData = imageBitmaps.map((imageBitmap) => [imageBitmap]);
+        console.log(slicesData);
+        return {
+          slicesData: slicesData,
+          imageFileInfo: new ImageFileInfo({
+            fileName: imageFile.name,
+            size: imageFile.size,
+            width: image.width,
+            height: image.height,
+            num_slices: 1,
+            num_channels: 3,
+            content_hash: "test",
+          }),
+        } as CallbackArgs;
+      });
+    });
   };
 
   private loadNonTiffImage = (imageFile: File): Promise<CallbackArgs> =>
@@ -218,7 +334,7 @@ export class UploadImage extends Component<Props> {
     <div style={{ textAlign: "center" }}>
       <label htmlFor="icon-button-file">
         <input
-          accept="image/*"
+          accept="image/*,.dcm"
           id="icon-button-file"
           type="file"
           style={{ display: "none", textAlign: "center" }}
@@ -233,6 +349,8 @@ export class UploadImage extends Component<Props> {
                   const successfulUploads = callbackArgsArray.filter(
                     (result) => result.status === "fulfilled"
                   ) as PromiseFulfilledResult<CallbackArgs>[];
+                  console.log(callbackArgsArray);
+                  console.log(successfulUploads);
                   this.props.setUploadedImage(
                     successfulUploads.map((args) => args.value.imageFileInfo),
                     successfulUploads.map((args) => args.value.slicesData)
