@@ -2,6 +2,7 @@
   "files": [
     "README.md"
   ],
+  "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/contributors-<%= contributors.length %>-yellow.svg?style=flat-square)](#contributors)",
   "imageSize": 100,
   "commit": false,
   "contributors": [
@@ -26,6 +27,17 @@
         "review",
         "maintenance",
         "test"
+      ]
+    },
+    {
+      "login": "philipjackson",
+      "name": "philipjackson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26219665?v=4",
+      "profile": "https://github.com/philipjackson",
+      "contributions": [
+        "code",
+        "review",
+        "ideas"
       ]
     }
   ],
