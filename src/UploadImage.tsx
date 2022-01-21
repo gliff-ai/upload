@@ -80,15 +80,11 @@ export class UploadImage extends Component<Props> {
       console.log(image);
       console.log(image.data);
       console.log(image.getPixelData());
-      console.log(
-        `Height: ${image.height}, Width: ${image.width}, Slices: ${
-          image.data.byteArray.length / (image.height * image.width)
-        }`
-      );
 
+      // take either image.data.byteArray or image.getPixelData() as the pixel data, whichever is longer
       const data = [];
       let pixelData: number[];
-      if (image.data.byteArray.length > image.getPixelData()) {
+      if (image.data.byteArray.length > image.getPixelData().length) {
         pixelData = image.data.byteArray;
       } else {
         pixelData = image.getPixelData();
@@ -113,9 +109,10 @@ export class UploadImage extends Component<Props> {
       const slices = Math.floor(
         pixelData.length / (image.height * image.width)
       );
+      console.log(`Height: ${image.height}, Width: ${image.width}, Slices: ${slices}`);
       const imageDataSize = 4 * image.height * image.width * slices;
-      data.splice(0, (data.length - imageDataSize) / 2); // remove front padding
-      data.splice(imageDataSize); // remove rear padding
+      console.log(`Padding: ${(data.length - imageDataSize) / 2}`);
+      data.splice(0, data.length - imageDataSize); // remove padding
       
       const sliceBytes = image.width * image.height * 4;
       const sliceImageData: ImageData[] = [];
