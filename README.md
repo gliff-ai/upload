@@ -1,6 +1,6 @@
 # gliff.ai UPLOAD
 
-![Repo License](https://img.shields.io/github/license/gliff-ai/upload?color=0078FF&style=flat-square) ![Repository Size](https://img.shields.io/github/repo-size/gliff-ai/upload?style=flat-square&color=red) ![Latest Tag](https://img.shields.io/github/v/tag/gliff-ai/upload?&label=latest_tag&style=flat-square&color=f2f2f2) ![Number of Open Issues](https://img.shields.io/github/issues/gliff-ai/upload?style=flat-square&color=yellow) ![Number of Open Pull Requests](https://img.shields.io/github/issues-pr/gliff-ai/upload?style=flat-square&color=yellow) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+![Repo License](https://img.shields.io/github/license/gliff-ai/upload?color=0078FF&style=flat-square) ![Repository Size](https://img.shields.io/github/repo-size/gliff-ai/upload?style=flat-square&color=f2f2f2) ![Latest Tag](https://img.shields.io/github/v/tag/gliff-ai/upload?&label=latest%20tag&style=flat-square&color=f2f2f2) ![Number of Open Issues](https://img.shields.io/github/issues/gliff-ai/upload?style=flat-square&color=yellow) ![Number of Open Pull Requests](https://img.shields.io/github/issues-pr/gliff-ai/upload?style=flat-square&color=yellow) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/contributors-3-yellow.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
