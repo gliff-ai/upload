@@ -134,7 +134,7 @@ _This project follows the [all-contributors specification](https://github.com/al
 [{{back to navigation}}](#table-of-contents)
 
 Need some help? 🤔 Have a question? 🧠 \
-Reach out to the gliff.ai team at [community@gliff.ai](mailto:community@gliff.ai?subject=[GitHub]) or on GitHub.
+Reach out to the gliff.ai team at [community@gliff.ai](mailto:community@gliff.ai?subject=[GitHub]) or on our [GitHub discussions](https://github.com/gliff-ai/roadmap/discussions/landing).
 
 ## License
 
