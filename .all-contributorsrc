@@ -39,6 +39,17 @@
         "review",
         "ideas"
       ]
+    },
+    {
+      "login": "cooper667",
+      "name": "Craig Cooper",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3502798?v=4",
+      "profile": "http://c9r.dev",
+      "contributions": [
+        "code",
+        "review",
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
