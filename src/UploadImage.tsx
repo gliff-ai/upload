@@ -82,7 +82,6 @@ export class UploadImage extends Component<Props> {
       console.log(image.getPixelData());
 
       // take either image.data.byteArray or image.getPixelData() as the pixel data, whichever is longer
-      const data = [];
       let pixelData: number[];
       if (image.data.byteArray.length > image.getPixelData().length) {
         pixelData = image.data.byteArray;
@@ -90,29 +89,51 @@ export class UploadImage extends Component<Props> {
         pixelData = image.getPixelData();
       }
 
-      if (image.color) {
-        // insert alpha into pixelData:
+      // need to turn pixelData into RGBA format:
+      let rgba = [];
+      if (!image.color) {
         for (let i = 0; i < pixelData.length; i += 1) {
-          data.push(pixelData[i]);
-          if (i % 3 === 2) data.push(255); // alpha channel
+          rgba.push(pixelData[i]); // R
+          rgba.push(pixelData[i]); // G
+          rgba.push(pixelData[i]); // B
+          rgba.push(255); // A
         }
       } else {
-        for (let i = 0; i < pixelData.length; i += 1) {
-          data.push(pixelData[i]); // R
-          data.push(pixelData[i]); // G
-          data.push(pixelData[i]); // B
-          data.push(255); // A
+        // have to decide whether pixelData is RGB or RGBA
+        const alpha: number[] = [];
+        for (let i = 0; i < 10; i += 1) {
+          alpha.push(pixelData[(i * (pixelData.length/10 - (pixelData.length/10 % 4))) + 3]);
+        }
+        // heuristic: if RGBA then pixelData should be a multiple of 4wh
+        // further heuristic: pick 10 "alpha" values throughout the image, make sure they're all the same:
+        console.log(pixelData.length % (image.width * image.height * 4) === 0, alpha)
+        if (pixelData.length % (image.width * image.height * 4) === 0 && alpha.every( v => v === alpha[0])) {
+          console.log("pixelData already RGBA");
+          rgba = pixelData; // pixelData already RGBA
+        } else {
+          // insert alpha into pixelData:
+          console.log("pixelData is RGB")
+          for (let i = 0; i < pixelData.length; i += 1) {
+            rgba.push(pixelData[i]);
+            if (i % 3 === 2) rgba.push(255); // alpha channel
+          }
         }
       }
 
+      console.log(rgba)
+
       // trim pixel data to a whole number of slices:
       const slices = Math.floor(
-        pixelData.length / (image.height * image.width)
+        rgba.length / (image.height * image.width * 4)
       );
       console.log(`Height: ${image.height}, Width: ${image.width}, Slices: ${slices}`);
       const imageDataSize = 4 * image.height * image.width * slices;
-      console.log(`Padding: ${(data.length - imageDataSize) / 2}`);
-      data.splice(0, data.length - imageDataSize); // remove padding
+      console.log(`Padding: ${rgba.length - imageDataSize}`);
+      if (rgba.length - imageDataSize > 0) {
+        rgba.splice(0, rgba.length - imageDataSize); // remove padding
+      }
+      
+      console.log("one")
       
       const sliceBytes = image.width * image.height * 4;
       const sliceImageData: ImageData[] = [];
@@ -120,13 +141,15 @@ export class UploadImage extends Component<Props> {
         sliceImageData.push(
           new ImageData(
             new Uint8ClampedArray(
-              data.slice(sliceBytes * i, sliceBytes * (i + 1))
+              rgba.slice(sliceBytes * i, sliceBytes * (i + 1))
             ),
             image.width,
             image.height
           )
         );
       }
+
+      console.log("two")
 
       const imageBitmaps = sliceImageData.map((imageData) =>
         createImageBitmap(imageData)
