@@ -1,6 +1,8 @@
 # gliff.ai UPLOAD
 
-![Latest Tag](https://img.shields.io/github/v/tag/gliff-ai/upload?&label=latest_tag&style=flat-square&color=f2f2f2) ![Number of Open Issues](https://img.shields.io/github/issues/gliff-ai/upload?style=flat-square&color=yellow) ![Number of Open Pull Requests](https://img.shields.io/github/issues-pr/gliff-ai/upload?style=flat-square&color=yellow) [![Number of Contributors](https://img.shields.io/badge/all_contributors-1-yellow.svg?style=flat-square)](#contributors-) ![Repository Size](https://img.shields.io/github/repo-size/gliff-ai/upload?style=flat-square&color=red) ![Repo License](https://img.shields.io/github/license/gliff-ai/upload?color=0078FF&style=flat-square)
+![Repo License](https://img.shields.io/github/license/gliff-ai/upload?color=0078FF&style=flat-square) ![Repository Size](https://img.shields.io/github/repo-size/gliff-ai/upload?style=flat-square&color=f2f2f2) ![Latest Tag](https://img.shields.io/github/v/tag/gliff-ai/upload?&label=latest%20tag&style=flat-square&color=f2f2f2) ![Number of Open Issues](https://img.shields.io/github/issues/gliff-ai/upload?style=flat-square&color=yellow) ![Number of Open Pull Requests](https://img.shields.io/github/issues-pr/gliff-ai/upload?style=flat-square&color=yellow) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/contributors-4-yellow.svg?style=flat-square)](#contributors)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 👋 **Welcome in!** 👋
 
@@ -119,6 +121,8 @@ A big thank you from the entire gliff.ai team to these fellow contributors ([emo
   <tr>
     <td align="center"><a href="https://linktr.ee/joshuajames_smith"><img src="https://avatars.githubusercontent.com/u/83074763?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Josh</b></sub></a><br /><a href="https://github.com/gliff-ai/upload/commits?author=joshuajames-smith" title="Documentation">📖</a></td>
     <td align="center"><a href="http://www.chasnelson.co.uk"><img src="https://avatars.githubusercontent.com/u/7795189?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Chas Nelson</b></sub></a><br /><a href="https://github.com/gliff-ai/upload/commits?author=ChasNelson1990" title="Code">💻</a> <a href="#ideas-ChasNelson1990" title="Ideas, Planning, & Feedback">🤔</a> <a href="#projectManagement-ChasNelson1990" title="Project Management">📆</a> <a href="https://github.com/gliff-ai/upload/pulls?q=is%3Apr+reviewed-by%3AChasNelson1990" title="Reviewed Pull Requests">👀</a> <a href="#maintenance-ChasNelson1990" title="Maintenance">🚧</a> <a href="https://github.com/gliff-ai/upload/commits?author=ChasNelson1990" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://github.com/philipjackson"><img src="https://avatars.githubusercontent.com/u/26219665?v=4?s=100" width="100px;" alt=""/><br /><sub><b>philipjackson</b></sub></a><br /><a href="https://github.com/gliff-ai/upload/commits?author=philipjackson" title="Code">💻</a> <a href="https://github.com/gliff-ai/upload/pulls?q=is%3Apr+reviewed-by%3Aphilipjackson" title="Reviewed Pull Requests">👀</a> <a href="#ideas-philipjackson" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://c9r.dev"><img src="https://avatars.githubusercontent.com/u/3502798?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Craig Cooper</b></sub></a><br /><a href="https://github.com/gliff-ai/upload/commits?author=cooper667" title="Code">💻</a> <a href="https://github.com/gliff-ai/upload/pulls?q=is%3Apr+reviewed-by%3Acooper667" title="Reviewed Pull Requests">👀</a> <a href="#ideas-cooper667" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
@@ -134,7 +138,7 @@ _This project follows the [all-contributors specification](https://github.com/al
 [{{back to navigation}}](#table-of-contents)
 
 Need some help? 🤔 Have a question? 🧠 \
-Reach out to the gliff.ai team at [community@gliff.ai](mailto:community@gliff.ai?subject=[GitHub]) or on GitHub.
+Reach out to the gliff.ai team at [community@gliff.ai](mailto:community@gliff.ai?subject=[GitHub]) or on our [GitHub discussions](https://github.com/gliff-ai/roadmap/discussions/landing).
 
 ## License
 
