@@ -77,17 +77,12 @@ export class UploadImage extends Component<Props> {
     const imageId =
       cornerstoneWADOImageLoader.wadouri.fileManager.add(imageFile);
     return cornerstone.loadImage(imageId).then((image) => {
-      console.log(image);
-      console.log(image.data);
-      console.log(image.getPixelData());
-
       // take either image.data.byteArray or image.getPixelData() as the pixel data, whichever is longer
       let pixelData: number[];
       if (image.getPixelData() instanceof Int16Array || image.getPixelData() instanceof Uint16Array) {
         pixelData = image.getPixelData();
-        const max = Math.max(...pixelData);
         for (let i = 0; i < pixelData.length; i += 1) {
-          pixelData[i] = 255 * pixelData[i] / max;
+          pixelData[i] = 255 * pixelData[i] / image.maxPixelValue;
         }
       } else {
         if (image.data.byteArray.length > image.getPixelData().length ) {
@@ -115,13 +110,10 @@ export class UploadImage extends Component<Props> {
         }
         // heuristic: if RGBA then pixelData should be a multiple of 4wh
         // further heuristic: pick 10 "alpha" values throughout the image, make sure they're all the same:
-        console.log(pixelData.length % (image.width * image.height * 4) === 0, alpha)
         if (pixelData.length % (image.width * image.height * 4) === 0 && alpha.every( v => v === alpha[0])) {
-          console.log("pixelData already RGBA");
           rgba = pixelData; // pixelData already RGBA
         } else {
           // insert alpha into pixelData:
-          console.log("pixelData is RGB")
           for (let i = 0; i < pixelData.length; i += 1) {
             rgba.push(pixelData[i]);
             if (i % 3 === 2) rgba.push(255); // alpha channel
@@ -129,20 +121,14 @@ export class UploadImage extends Component<Props> {
         }
       }
 
-      console.log(rgba)
-
       // trim pixel data to a whole number of slices:
       const slices = Math.floor(
         rgba.length / (image.height * image.width * 4)
       );
-      console.log(`Height: ${image.height}, Width: ${image.width}, Slices: ${slices}`);
       const imageDataSize = 4 * image.height * image.width * slices;
-      console.log(`Padding: ${rgba.length - imageDataSize}`);
       if (rgba.length - imageDataSize > 0) {
         rgba.splice(0, rgba.length - imageDataSize); // remove padding
       }
-      
-      console.log("one")
       
       const sliceBytes = image.width * image.height * 4;
       const sliceImageData: ImageData[] = [];
@@ -158,15 +144,12 @@ export class UploadImage extends Component<Props> {
         );
       }
 
-      console.log("two")
-
       const imageBitmaps = sliceImageData.map((imageData) =>
         createImageBitmap(imageData)
       );
       return Promise.all(imageBitmaps).then((imageBitmaps) => {
         // wrap each imageBitmap in an array:
         const slicesData = imageBitmaps.map((imageBitmap) => [imageBitmap]);
-        console.log(slicesData);
         return {
           slicesData: slicesData,
           imageFileInfo: new ImageFileInfo({
@@ -378,8 +361,6 @@ export class UploadImage extends Component<Props> {
                   const successfulUploads = callbackArgsArray.filter(
                     (result) => result.status === "fulfilled"
                   ) as PromiseFulfilledResult<CallbackArgs>[];
-                  console.log(callbackArgsArray);
-                  console.log(successfulUploads);
                   this.props.setUploadedImage(
                     successfulUploads.map((args) => args.value.imageFileInfo),
                     successfulUploads.map((args) => args.value.slicesData)
