@@ -83,12 +83,20 @@ export class UploadImage extends Component<Props> {
 
       // take either image.data.byteArray or image.getPixelData() as the pixel data, whichever is longer
       let pixelData: number[];
-      if (image.data.byteArray.length > image.getPixelData().length) {
-        pixelData = image.data.byteArray;
-      } else {
+      if (image.getPixelData() instanceof Int16Array || image.getPixelData() instanceof Uint16Array) {
         pixelData = image.getPixelData();
+        const max = Math.max(...pixelData);
+        for (let i = 0; i < pixelData.length; i += 1) {
+          pixelData[i] = 255 * pixelData[i] / max;
+        }
+      } else {
+        if (image.data.byteArray.length > image.getPixelData().length ) {
+          pixelData = image.data.byteArray;
+        } else {
+          pixelData = image.getPixelData();
+        }
       }
-
+      
       // need to turn pixelData into RGBA format:
       let rgba = [];
       if (!image.color) {
@@ -101,8 +109,9 @@ export class UploadImage extends Component<Props> {
       } else {
         // have to decide whether pixelData is RGB or RGBA
         const alpha: number[] = [];
-        for (let i = 0; i < 10; i += 1) {
-          alpha.push(pixelData[(i * (pixelData.length/10 - (pixelData.length/10 % 4))) + 3]);
+        const inc = Math.floor(pixelData.length / 20);
+        for (let i = 0; i < 20; i += 1) {
+          alpha.push(pixelData[i * inc - (i * inc) % 4 + 3]);
         }
         // heuristic: if RGBA then pixelData should be a multiple of 4wh
         // further heuristic: pick 10 "alpha" values throughout the image, make sure they're all the same:
