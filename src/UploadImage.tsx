@@ -80,9 +80,9 @@ export class UploadImage extends Component<Props> {
     const imageId =
       cornerstoneWADOImageLoader.wadouri.fileManager.add(imageFile);
 
-    return cornerstone.loadImage(imageId).then((image) => {
+    return cornerstone.loadImage(imageId).then((image: cornerstone.Image & {data: {byteArray: Uint8Array}}) => {
       // take either image.data.byteArray or image.getPixelData() as the pixel data, whichever is longer
-      let pixelData: number[];
+      let pixelData: number[] | Uint8Array;
       if (
         image.getPixelData() instanceof Int16Array ||
         image.getPixelData() instanceof Uint16Array
@@ -99,7 +99,7 @@ export class UploadImage extends Component<Props> {
       /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment */
 
       // need to turn pixelData into RGBA format:
-      let rgba = [];
+      let rgba: number[] | Uint8Array = [];
       if (!image.color) {
         for (let i = 0; i < pixelData.length; i += 1) {
           rgba.push(pixelData[i]); // R
@@ -134,7 +134,7 @@ export class UploadImage extends Component<Props> {
       const slices = Math.floor(rgba.length / (image.height * image.width * 4));
       const imageDataSize = 4 * image.height * image.width * slices;
       if (rgba.length - imageDataSize > 0) {
-        rgba.splice(0, rgba.length - imageDataSize); // remove padding
+        rgba = rgba.slice(rgba.length - imageDataSize); // remove padding
       }
 
       const sliceBytes = image.width * image.height * 4;
