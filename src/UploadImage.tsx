@@ -1,14 +1,15 @@
 import { Component, ReactNode } from "react";
 import { Md5 } from "ts-md5";
 import * as UTIF from "utif";
-import { ImageFileInfo } from "./ImageFileInfo";
 
 import dicomParser from "dicom-parser";
 import cornerstone from "cornerstone-core";
 import cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
 import cornerstoneMath from "cornerstone-math";
-import cornerstoneTools from "cornerstone-tools";
 import Hammer from "hammerjs";
+import cornerstoneTools from "cornerstone-tools";
+
+import { ImageFileInfo } from "./ImageFileInfo";
 
 const log = console;
 
@@ -42,15 +43,17 @@ export class UploadImage extends Component<Props> {
 
     if (patternTiff.exec(imageFile.name)) {
       return this.loadTiffImage(imageFile);
-    } else if (patternDICOM.exec(imageFile.name)) {
-      return this.loadDICOMImage(imageFile);
-    } else {
-      return this.loadNonTiffImage(imageFile);
     }
+    if (patternDICOM.exec(imageFile.name)) {
+      return this.loadDICOMImage(imageFile);
+    }
+    return this.loadNonTiffImage(imageFile);
   };
 
   private loadDICOMImage = (imageFile: File): Promise<CallbackArgs> => {
     // Cornerstone Tools
+    /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment */
+    // TODO: re-write all of this with a DICOM library tha actually supports 3D images
     cornerstoneTools.external.cornerstone = cornerstone;
     cornerstoneTools.external.Hammer = Hammer;
     cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
@@ -76,6 +79,7 @@ export class UploadImage extends Component<Props> {
 
     const imageId =
       cornerstoneWADOImageLoader.wadouri.fileManager.add(imageFile);
+
     return cornerstone.loadImage(imageId).then((image) => {
       // take either image.data.byteArray or image.getPixelData() as the pixel data, whichever is longer
       let pixelData: number[];
@@ -84,13 +88,12 @@ export class UploadImage extends Component<Props> {
         for (let i = 0; i < pixelData.length; i += 1) {
           pixelData[i] = 255 * pixelData[i] / image.maxPixelValue;
         }
+      } else if (image.data.byteArray.length > image.getPixelData().length ) {
+        pixelData = image.data.byteArray;
       } else {
-        if (image.data.byteArray.length > image.getPixelData().length ) {
-          pixelData = image.data.byteArray;
-        } else {
-          pixelData = image.getPixelData();
-        }
+        pixelData = image.getPixelData();
       }
+      /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment */
       
       // need to turn pixelData into RGBA format:
       let rgba = [];
@@ -144,14 +147,14 @@ export class UploadImage extends Component<Props> {
         );
       }
 
-      const imageBitmaps = sliceImageData.map((imageData) =>
+      const imageBitmapPromises = sliceImageData.map((imageData) =>
         createImageBitmap(imageData)
       );
-      return Promise.all(imageBitmaps).then((imageBitmaps) => {
+      return Promise.all(imageBitmapPromises).then((imageBitmaps) => {
         // wrap each imageBitmap in an array:
         const slicesData = imageBitmaps.map((imageBitmap) => [imageBitmap]);
         return {
-          slicesData: slicesData,
+          slicesData,
           imageFileInfo: new ImageFileInfo({
             fileName: imageFile.name,
             size: imageFile.size,
