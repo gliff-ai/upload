@@ -83,18 +83,21 @@ export class UploadImage extends Component<Props> {
     return cornerstone.loadImage(imageId).then((image) => {
       // take either image.data.byteArray or image.getPixelData() as the pixel data, whichever is longer
       let pixelData: number[];
-      if (image.getPixelData() instanceof Int16Array || image.getPixelData() instanceof Uint16Array) {
+      if (
+        image.getPixelData() instanceof Int16Array ||
+        image.getPixelData() instanceof Uint16Array
+      ) {
         pixelData = image.getPixelData();
         for (let i = 0; i < pixelData.length; i += 1) {
-          pixelData[i] = 255 * pixelData[i] / image.maxPixelValue;
+          pixelData[i] = (255 * pixelData[i]) / image.maxPixelValue;
         }
-      } else if (image.data.byteArray.length > image.getPixelData().length ) {
+      } else if (image.data.byteArray.length > image.getPixelData().length) {
         pixelData = image.data.byteArray;
       } else {
         pixelData = image.getPixelData();
       }
       /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment */
-      
+
       // need to turn pixelData into RGBA format:
       let rgba = [];
       if (!image.color) {
@@ -109,11 +112,14 @@ export class UploadImage extends Component<Props> {
         const alpha: number[] = [];
         const inc = Math.floor(pixelData.length / 20);
         for (let i = 0; i < 20; i += 1) {
-          alpha.push(pixelData[i * inc - (i * inc) % 4 + 3]);
+          alpha.push(pixelData[i * inc - ((i * inc) % 4) + 3]);
         }
         // heuristic: if RGBA then pixelData should be a multiple of 4wh
         // further heuristic: pick 10 "alpha" values throughout the image, make sure they're all the same:
-        if (pixelData.length % (image.width * image.height * 4) === 0 && alpha.every( v => v === alpha[0])) {
+        if (
+          pixelData.length % (image.width * image.height * 4) === 0 &&
+          alpha.every((v) => v === alpha[0])
+        ) {
           rgba = pixelData; // pixelData already RGBA
         } else {
           // insert alpha into pixelData:
@@ -125,14 +131,12 @@ export class UploadImage extends Component<Props> {
       }
 
       // trim pixel data to a whole number of slices:
-      const slices = Math.floor(
-        rgba.length / (image.height * image.width * 4)
-      );
+      const slices = Math.floor(rgba.length / (image.height * image.width * 4));
       const imageDataSize = 4 * image.height * image.width * slices;
       if (rgba.length - imageDataSize > 0) {
         rgba.splice(0, rgba.length - imageDataSize); // remove padding
       }
-      
+
       const sliceBytes = image.width * image.height * 4;
       const sliceImageData: ImageData[] = [];
       for (let i = 0; i < slices; i += 1) {
