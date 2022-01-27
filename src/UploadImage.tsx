@@ -1,6 +1,14 @@
 import { Component, ReactNode } from "react";
 import { Md5 } from "ts-md5";
 import * as UTIF from "utif";
+
+import dicomParser from "dicom-parser";
+import cornerstone from "cornerstone-core";
+import cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
+import cornerstoneMath from "cornerstone-math";
+import Hammer from "hammerjs";
+import cornerstoneTools from "cornerstone-tools";
+
 import { ImageFileInfo } from "./ImageFileInfo";
 
 const log = console;
@@ -31,11 +39,146 @@ export class UploadImage extends Component<Props> {
 
   private uploadImage = (imageFile: File): Promise<CallbackArgs> => {
     const patternTiff = /tiff|tif$/i;
+    const patternDICOM = /dcm$/i;
 
     if (patternTiff.exec(imageFile.name)) {
       return this.loadTiffImage(imageFile);
     }
+    if (patternDICOM.exec(imageFile.name)) {
+      return this.loadDICOMImage(imageFile);
+    }
     return this.loadNonTiffImage(imageFile);
+  };
+
+  private loadDICOMImage = (imageFile: File): Promise<CallbackArgs> => {
+    // Cornerstone Tools
+    /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment */
+    // TODO: re-write all of this with a DICOM library tha actually supports 3D images
+    cornerstoneTools.external.cornerstone = cornerstone;
+    cornerstoneTools.external.Hammer = Hammer;
+    cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
+    cornerstoneTools.init();
+
+    // Image Loader
+    cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
+    cornerstoneWADOImageLoader.external.dicomParser = dicomParser;
+    cornerstoneWADOImageLoader.webWorkerManager.initialize({
+      maxWebWorkers: navigator.hardwareConcurrency || 1,
+      startWebWorkersOnDemand: true,
+      taskConfiguration: {
+        decodeTask: {
+          initializeCodecsOnStartup: false,
+          usePDFJS: false,
+          strict: false,
+        },
+      },
+      webWorkerTaskPaths: [
+        "https://unpkg.com/cornerstone-wado-image-loader@4.1.0/dist/610.bundle.min.worker.js",
+      ],
+    });
+
+    const imageId =
+      cornerstoneWADOImageLoader.wadouri.fileManager.add(imageFile);
+
+    return cornerstone
+      .loadImage(imageId)
+      .then(
+        (image: cornerstone.Image & { data: { byteArray: Uint8Array } }) => {
+          // take either image.data.byteArray or image.getPixelData() as the pixel data, whichever is longer
+          let pixelData: number[] | Uint8Array;
+          if (
+            image.getPixelData() instanceof Int16Array ||
+            image.getPixelData() instanceof Uint16Array
+          ) {
+            pixelData = image.getPixelData();
+            for (let i = 0; i < pixelData.length; i += 1) {
+              pixelData[i] = (255 * pixelData[i]) / image.maxPixelValue;
+            }
+          } else if (
+            image.data.byteArray.length > image.getPixelData().length
+          ) {
+            pixelData = image.data.byteArray;
+          } else {
+            pixelData = image.getPixelData();
+          }
+          /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment */
+
+          // need to turn pixelData into RGBA format:
+          let rgba: number[] | Uint8Array = [];
+          if (!image.color) {
+            for (let i = 0; i < pixelData.length; i += 1) {
+              rgba.push(pixelData[i]); // R
+              rgba.push(pixelData[i]); // G
+              rgba.push(pixelData[i]); // B
+              rgba.push(255); // A
+            }
+          } else {
+            // have to decide whether pixelData is RGB or RGBA
+            const alpha: number[] = [];
+            const inc = Math.floor(pixelData.length / 20);
+            for (let i = 0; i < 20; i += 1) {
+              alpha.push(pixelData[i * inc - ((i * inc) % 4) + 3]);
+            }
+            // heuristic: if RGBA then pixelData should be a multiple of 4wh
+            // further heuristic: pick 10 "alpha" values throughout the image, make sure they're all the same:
+            if (
+              pixelData.length % (image.width * image.height * 4) === 0 &&
+              alpha.every((v) => v === alpha[0])
+            ) {
+              rgba = pixelData; // pixelData already RGBA
+            } else {
+              // insert alpha into pixelData:
+              for (let i = 0; i < pixelData.length; i += 1) {
+                rgba.push(pixelData[i]);
+                if (i % 3 === 2) rgba.push(255); // alpha channel
+              }
+            }
+          }
+
+          // trim pixel data to a whole number of slices:
+          const slices = Math.floor(
+            rgba.length / (image.height * image.width * 4)
+          );
+          const imageDataSize = 4 * image.height * image.width * slices;
+          if (rgba.length - imageDataSize > 0) {
+            rgba = rgba.slice(rgba.length - imageDataSize); // remove padding
+          }
+
+          const sliceBytes = image.width * image.height * 4;
+          const sliceImageData: ImageData[] = [];
+          for (let i = 0; i < slices; i += 1) {
+            sliceImageData.push(
+              new ImageData(
+                new Uint8ClampedArray(
+                  rgba.slice(sliceBytes * i, sliceBytes * (i + 1))
+                ),
+                image.width,
+                image.height
+              )
+            );
+          }
+
+          const imageBitmapPromises = sliceImageData.map((imageData) =>
+            createImageBitmap(imageData)
+          );
+          return Promise.all(imageBitmapPromises).then((imageBitmaps) => {
+            // wrap each imageBitmap in an array:
+            const slicesData = imageBitmaps.map((imageBitmap) => [imageBitmap]);
+            return {
+              slicesData,
+              imageFileInfo: new ImageFileInfo({
+                fileName: imageFile.name,
+                size: imageFile.size,
+                width: image.width,
+                height: image.height,
+                num_slices: 1,
+                num_channels: 3,
+                content_hash: "test",
+              }),
+            } as CallbackArgs;
+          });
+        }
+      );
   };
 
   private loadNonTiffImage = (imageFile: File): Promise<CallbackArgs> =>
@@ -233,7 +376,7 @@ export class UploadImage extends Component<Props> {
     <div style={{ textAlign: "center" }}>
       <label htmlFor="icon-button-file">
         <input
-          accept="image/*"
+          accept="image/*,.dcm"
           id="icon-button-file"
           type="file"
           style={{ display: "none", textAlign: "center" }}
