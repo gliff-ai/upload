@@ -2,13 +2,14 @@
 
 ![Repo License](https://img.shields.io/github/license/gliff-ai/upload?color=0078FF&style=flat-square) ![Repository Size](https://img.shields.io/github/repo-size/gliff-ai/upload?style=flat-square&color=f2f2f2) ![Latest Tag](https://img.shields.io/github/v/tag/gliff-ai/upload?&label=latest%20tag&style=flat-square&color=f2f2f2) ![Number of Open Issues](https://img.shields.io/github/issues/gliff-ai/upload?style=flat-square&color=yellow) ![Number of Open Pull Requests](https://img.shields.io/github/issues-pr/gliff-ai/upload?style=flat-square&color=yellow) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/contributors-4-yellow.svg?style=flat-square)](#contributors)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 👋 **Welcome in!** 👋
 
-This repository contains the Open Source code for [gliff.ai](https://gliff.ai)’s UPLOAD support library (gliff.ai’s component for uploading multidimensional images). 
+This repository contains the Open Source code for [gliff.ai](https://gliff.ai)’s UPLOAD support library (gliff.ai’s component for uploading multidimensional images).
 
-UPLOAD aims to allow users to easily upload a variety of image files, including multidimensional TIFFs, for the purposes of developing imaging AI products. When the full [gliff.ai platform](https://gliff.ai/software/) is used, UPLOAD provides just one step in developing high-quality and auditable datasets that satisfy any relevant regulatory frameworks which enables our users to build world-changing and trustworthy AI models and products. 
+UPLOAD aims to allow users to easily upload a variety of image files, including multidimensional TIFFs, for the purposes of developing imaging AI products. When the full [gliff.ai platform](https://gliff.ai/software/) is used, UPLOAD provides just one step in developing high-quality and auditable datasets that satisfy any relevant regulatory frameworks which enables our users to build world-changing and trustworthy AI models and products.
 
 ✅ **We welcome contributions on this repository!** ✅
 
@@ -75,7 +76,7 @@ Import the `UploadImage` module and the `ImageFileInfo` type:
 
 ```javascript
 import { UploadImage } from @gliff-ai/upload;
-import { ImageFileInfo } from @gliff-ai/upload/typings;
+import type { ImageFileInfo } from @gliff-ai/upload;
 ```
 
 Use the `UploadImage` module:
@@ -108,12 +109,13 @@ The example above uses [Material-UI](https://material-ui.com/).
 
 [{{back to navigation}}](#table-of-contents)
 
-We welcome all contributors and any contributions on this project through the likes of feedback on or suggesting features and enhancements, raising bug problems, reporting on security vulnerabilities, reviewing code, requesting or creating tests, user testing etc. to ensure gliff.ai can help enable the best and biggest positive impact possible. 
+We welcome all contributors and any contributions on this project through the likes of feedback on or suggesting features and enhancements, raising bug problems, reporting on security vulnerabilities, reviewing code, requesting or creating tests, user testing etc. to ensure gliff.ai can help enable the best and biggest positive impact possible.
 
 Sounds good and want to contribute to the project? 🧑‍💻 \
-Please check the [gliff.ai Contribution Guide]((https://github.com/gliff-ai/.github/blob/main/CONTRIBUTING.md)) 👋 before you get started. Don’t forget the [gliff.ai Code of Conduct]((https://github.com/gliff-ai/.github/blob/main/CODE_OF_CONDUCT.md)) ⚠️ and  [gliff.ai Security Policy]((https://github.com/gliff-ai/.github/blob/main/SECURITY.md)) 🔒 too!
+Please check the [gliff.ai Contribution Guide](<(https://github.com/gliff-ai/.github/blob/main/CONTRIBUTING.md)>) 👋 before you get started. Don’t forget the [gliff.ai Code of Conduct](<(https://github.com/gliff-ai/.github/blob/main/CODE_OF_CONDUCT.md)>) ⚠️ and [gliff.ai Security Policy](<(https://github.com/gliff-ai/.github/blob/main/SECURITY.md)>) 🔒 too!
 
 A big thank you from the entire gliff.ai team to these fellow contributors ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
