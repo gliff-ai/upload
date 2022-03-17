@@ -1,2 +1,2 @@
 export { UploadImage } from "./UploadImage";
-export { ImageFileInfo } from "./ImageFileInfo";
+export type { ImageFileInfo } from "./ImageFileInfo";

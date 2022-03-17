@@ -166,7 +166,7 @@ export class UploadImage extends Component<Props> {
             const slicesData = imageBitmaps.map((imageBitmap) => [imageBitmap]);
             return {
               slicesData,
-              imageFileInfo: new ImageFileInfo({
+              imageFileInfo: {
                 fileName: imageFile.name,
                 size: imageFile.size,
                 width: image.width,
@@ -174,7 +174,7 @@ export class UploadImage extends Component<Props> {
                 num_slices: 1,
                 num_channels: 3,
                 content_hash: "test",
-              }),
+              },
             } as CallbackArgs;
           });
         }
@@ -210,7 +210,7 @@ export class UploadImage extends Component<Props> {
             .then((RGBImageBitmaps) => {
               resolve({
                 slicesData: [RGBImageBitmaps],
-                imageFileInfo: new ImageFileInfo({
+                imageFileInfo: {
                   fileName: imageFile.name,
                   size: imageFile.size,
                   width: image.width,
@@ -218,7 +218,7 @@ export class UploadImage extends Component<Props> {
                   num_slices: 1,
                   num_channels: 3,
                   content_hash: md5,
-                }),
+                },
               });
             })
             .catch((e) => log.error(e));
@@ -328,7 +328,7 @@ export class UploadImage extends Component<Props> {
           .then((slicesData) => {
             resolve({
               slicesData,
-              imageFileInfo: new ImageFileInfo({
+              imageFileInfo: {
                 fileName: imageFile.name,
                 resolution_x: resolutionX,
                 resolution_y: resolutionY,
@@ -338,7 +338,7 @@ export class UploadImage extends Component<Props> {
                 height,
                 num_slices: slicesData.length,
                 num_channels: slicesData[0].length,
-              }),
+              },
             });
           })
           .catch((e) => {
