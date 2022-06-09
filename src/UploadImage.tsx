@@ -386,7 +386,7 @@ export class UploadImage extends Component<Props> {
               argsPromises.push(this.uploadImage(e.target.files[i]));
             }
 
-            e.target.files = null;
+            e.target.value = null;
             Promise.allSettled(argsPromises)
               .then(
                 (callbackArgsArray: PromiseSettledResult<CallbackArgs>[]) => {
