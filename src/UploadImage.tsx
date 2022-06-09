@@ -380,14 +380,13 @@ export class UploadImage extends Component<Props> {
           id="icon-button-file"
           type="file"
           style={{ display: "none", textAlign: "center" }}
-          onClick={(event)=> {
-            event.target.value = null;
-          }}
           onChange={(e) => {
             const argsPromises: Promise<CallbackArgs>[] = [];
             for (let i = 0; i < e.target.files.length; i += 1) {
               argsPromises.push(this.uploadImage(e.target.files[i]));
             }
+
+            e.target.files = null;
             Promise.allSettled(argsPromises)
               .then(
                 (callbackArgsArray: PromiseSettledResult<CallbackArgs>[]) => {
